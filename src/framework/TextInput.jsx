@@ -29,7 +29,7 @@ const StyledTextField = styled(TextField)(({ theme, color = "black" }) => ({
     borderRadius: "5px",
     fontSize: "13px",
     fontWeight: 700,
-    backgroundColor: "#b4fab4",
+    backgroundColor: "#e6fcee",
     "& fieldset": {
       border: `2px solid ${theme.palette[color].main}`,
     },
@@ -42,7 +42,7 @@ const StyledTextField = styled(TextField)(({ theme, color = "black" }) => ({
       boxShadow: `${theme.palette[color].boxShadow}`,
     },
     "&.Mui-disabled": {
-      backgroundColor: "#b4fab4",
+      backgroundColor: "#e6fcee",
     },
   },
   "& .MuiInputLabel-root": {

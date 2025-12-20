@@ -35,7 +35,7 @@ const StyledFormControl = styled(FormControl)(({ theme, color = "black" }) => ({
     borderRadius: "5px",
     fontSize: "13px",
     fontWeight: 700,
-    backgroundColor: "#facafc",
+    backgroundColor: "#e6fcee",
     "& fieldset": {
       border: `2px solid ${theme.palette[color].main}`,
     },
@@ -48,7 +48,7 @@ const StyledFormControl = styled(FormControl)(({ theme, color = "black" }) => ({
       boxShadow: `${theme.palette[color].boxShadow}`,
     },
     "&.Mui-disabled": {
-      backgroundColor: "#facafc",
+      backgroundColor: "#e6fcee",
     },
   },
   "& .MuiInputLabel-root": {

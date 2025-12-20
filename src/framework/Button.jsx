@@ -123,7 +123,7 @@ const Button = React.forwardRef(
       badgeContent,
       invisible = true,
       markers,
-      fullWidth = true, //alston
+      fullWidth = true,
       disabled,
       isAccessible = true,
       onFocus = () => {},
@@ -160,7 +160,7 @@ const Button = React.forwardRef(
               whiteSpace: "nowrap",
               height: "32px",
               maxWidth: "100%",
-              color: disabled ? "rgba(255, 255, 255, 0.36)" : "#fff", //alston
+              color: disabled ? "rgba(255, 255, 255, 0.36)" : "#fff", 
               display: isAccessible ? "inline-flex" : "none",
               ...sx,
             }}
@@ -173,12 +173,11 @@ const Button = React.forwardRef(
             color={color}
             disableRipple={disableRipple}
             data-markers={markers}
-            fullWidth={fullWidth} //alston
-            // disabled={disabled} //alston
+            fullWidth={fullWidth} 
           >
             {label}
           </StyledButton>
-          {disabled && ( // alston
+          {disabled && ( 
             <div
               style={{
                 position: "absolute",
