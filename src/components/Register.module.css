@@ -1,0 +1,37 @@
+.container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  box-shadow: -4px 4px 0px 0px rgb(0, 0, 0, 0.8);
+}
+
+.title {
+  text-align: center;
+  margin: 0 auto 30px auto;
+  color: #434df9;
+  width: 100%;
+  display: block;
+  padding: 0;
+}
+
+.form {
+  width: 100%;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.submitButton {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitButton > * {
+  width: 100%;
+}
