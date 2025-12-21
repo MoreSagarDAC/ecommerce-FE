@@ -35,3 +35,10 @@
 .submitButton > * {
   width: 100%;
 }
+
+.loginLink {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #434df9;
+}

@@ -9,12 +9,13 @@ import styles from "./Register.module.css";
 import { registerUser } from "../services/user-services";
 import { useNavigate } from "react-router-dom";
 import { encryptEmail, encryptPassword } from "../utils/encryption";
-
+import { Link } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(userSchema),
@@ -29,8 +30,8 @@ const Register = () => {
         password: encryptPassword(data.password),
       };
       const response = await registerUser(encryptedData);
-      console.log("responce", response);
       if (response.status === 200) {
+        reset();
         alert("Registration successful!");
         navigate("/login");
       } else {
@@ -115,7 +116,11 @@ const Register = () => {
             )}
           />
         </div>
-
+        <div className={styles.inputGroup}>
+          <p className={styles.loginLink}>
+            <Link to="/login"> Already have an account? Login</Link>
+          </p>
+        </div>
         <div className={styles.submitButton}>
           <Button
             type="submit"

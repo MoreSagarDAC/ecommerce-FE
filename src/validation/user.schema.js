@@ -25,4 +25,9 @@ const userSchema = yup.object().shape({
     .matches(/^\d{10}$/, "Invalid phone number"),
 });
 
+
+export const loginSchema = userSchema.pick(["email", "password"]).shape({
+  password: yup.string().required("Password is required"),
+});
+
 export default userSchema;

@@ -6,7 +6,8 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async (credentials) => {
-  return await nodeClient.post("/users/v1/login", credentials);
+  const response = await nodeClient.post("/users/v1/login", credentials);
+  return response?.data;
 };
 
 export const getUserProfile = async (userId) => {
