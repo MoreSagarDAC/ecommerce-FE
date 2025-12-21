@@ -1,16 +1,17 @@
 .container {
   max-width: 400px;
   margin: 50px auto;
+  background: #f5fcbd;
   padding: 30px;
   border: 2px solid #000000;
-  border-radius: 10px;
-  box-shadow: -4px 4px 0px 0px rgb(0, 0, 0, 0.8);
+  border-radius: 10px;  
 }
 
 .title {
   text-align: center;
   margin: 0 auto 30px auto;
-  color: #434df9;
+  color: black;
+  font-weight: 700;
   width: 100%;
   display: block;
   padding: 0;
