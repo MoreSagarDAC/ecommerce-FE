@@ -69,7 +69,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           width: "100%",
-          height: "28px !important",
+          height: "32px !important",
           overflow: "hidden",
           justifyContent: "flex-start",
           padding: "0 10px",
@@ -155,7 +155,7 @@ const Button = React.forwardRef(
             endIcon={endIcon}
             sx={{
               borderRadius: "5px",
-              fontSize: "13px",
+              fontSize: "16px",
               fontWeight: 700,
               whiteSpace: "nowrap",
               height: "32px",

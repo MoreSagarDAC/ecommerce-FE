@@ -127,7 +127,7 @@ const Register = () => {
             label="Register"
             color="black"
             fullWidth={true}
-            sx={{ justifyContent: "center" }}
+            sx={{ justifyContent: "center",  fontWeight: 900 }}
           />
         </div>
       </form>
