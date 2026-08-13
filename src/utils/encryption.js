@@ -11,6 +11,7 @@ export const encryptEmail = (email) => {
     console.error("Email encryption error:", error);
     return email;
   }
+  
 };
 
 export const encryptPassword = (password) => {
