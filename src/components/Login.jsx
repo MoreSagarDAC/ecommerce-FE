@@ -7,12 +7,12 @@ import { loginSchema } from "../validation/user.schema";
 import { Controller, useForm } from "react-hook-form";
 import { useCallback } from "react";
 import { encryptEmail, encryptPassword } from "../utils/encryption";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/user-services.js";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     control,
@@ -35,13 +35,14 @@ const Login = () => {
         const response = await loginUser(encryptedData);
         if (response) {
           dispatch(login(response?.user));
+          navigate("/home")
           reset();
         }
       } catch (error) {
         console.error("Login error:", error);
       }
     },
-    [dispatch, reset]
+    [dispatch, navigate, reset]
   );
 
   return (
