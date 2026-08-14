@@ -26,7 +26,19 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import HomeIcon from "@mui/icons-material/Home";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import CategoryIcon from "@mui/icons-material/Category";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -112,6 +124,67 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const profileMenuOpen = Boolean(anchorEl);
+
+  const mainMenuItems = [
+    {
+      label: "Home",
+      path: "/home",
+      icon: <HomeIcon />,
+    },
+    {
+      label: "Products",
+      path: "/products",
+      icon: <ShoppingBagIcon />,
+    },
+    {
+      label: "Categories",
+      path: "/categories",
+      icon: <CategoryIcon />,
+    },
+    {
+      label: "Wishlist",
+      path: "/wishlist",
+      icon: <FavoriteBorderIcon />,
+    },
+    {
+      label: "Cart",
+      path: "/cart",
+      icon: <ShoppingCartIcon />,
+    },
+    {
+      label: "My Orders",
+      path: "/orders",
+      icon: <ReceiptLongIcon />,
+    },
+    {
+      label: "Track Order",
+      path: "/track-order",
+      icon: <LocalShippingIcon />,
+    },
+    {
+      label: "Offers",
+      path: "/offers",
+      icon: <LocalOfferIcon />,
+    },
+  ];
+
+  const accountMenuItems = [
+    {
+      label: "My Profile",
+      path: "/profile",
+      icon: <PersonIcon />,
+    },
+    {
+      label: "My Addresses",
+      path: "/addresses",
+      icon: <LocationOnIcon />,
+    },
+    {
+      label: "Settings",
+      path: "/settings",
+      icon: <SettingsIcon />,
+    },
+  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -217,107 +290,98 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {mainMenuItems.map((item) => (
+            <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
+                component={Link}
+                to={item.path}
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                  justifyContent: open ? "initial" : "center",
+                }}
               >
                 <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: "center",
+                    mr: open ? 3 : "auto",
+                  }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {item.icon}
                 </ListItemIcon>
+
                 <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
+                  primary={item.label}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                  }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
+
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {accountMenuItems.map((item) => (
+            <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
+                component={Link}
+                to={item.path}
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                  justifyContent: open ? "initial" : "center",
+                }}
               >
                 <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: "center",
+                    mr: open ? 3 : "auto",
+                  }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {item.icon}
                 </ListItemIcon>
+
                 <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
+                  primary={item.label}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                  }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
+
+          {/* Logout */}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                px: 2.5,
+                justifyContent: open ? "initial" : "center",
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  justifyContent: "center",
+                  mr: open ? 3 : "auto",
+                }}
+              >
+                <LogoutIcon />
+              </ListItemIcon>
+
+              <ListItemText
+                primary="Logout"
+                sx={{
+                  opacity: open ? 1 : 0,
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
