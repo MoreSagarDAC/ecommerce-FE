@@ -36,7 +36,6 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -119,9 +118,12 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer({
+  open,
+  onDrawerOpen,
+  onDrawerClose,
+}) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const profileMenuOpen = Boolean(anchorEl);
 
@@ -186,14 +188,6 @@ export default function MiniDrawer() {
     },
   ];
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -203,7 +197,7 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box className="app-layout">
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -211,7 +205,7 @@ export default function MiniDrawer() {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={onDrawerOpen}
             edge="start"
             sx={[
               {
@@ -280,7 +274,7 @@ export default function MiniDrawer() {
       </Menu>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={onDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
@@ -354,8 +348,6 @@ export default function MiniDrawer() {
               </ListItemButton>
             </ListItem>
           ))}
-
-          {/* Logout */}
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={{
@@ -384,10 +376,6 @@ export default function MiniDrawer() {
           </ListItem>
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Outlet />
-      </Box>
     </Box>
   );
 }

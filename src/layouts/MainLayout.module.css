@@ -1,22 +1,68 @@
 .layout {
+  --navbar-height: 64px;
+  --drawer-width: 240px;
+  --drawer-collapsed-width: 65px;
+
   min-height: 100vh;
   width: 100%;
+  background: #fff;
+}
+
+
+/* =========================
+   Main content area
+   ========================= */
+
+.contentArea {
+  padding-top: var(--navbar-height);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: margin-left 0.25s ease;
 }
+
+.drawerOpen {
+  margin-left: var(--drawer-width);
+}
+
+.drawerClosed {
+  margin-left: var(--drawer-collapsed-width);
+}
+
+
+/* =========================
+   Child route area
+   ========================= */
 
 .main {
   flex: 1;
   width: 100%;
+
+  padding: 32px;
+
+  background: #fff;
 }
 
-/* .header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+
+/* =========================
+   Footer
+   ========================= */
+
+.footer {
   width: 100%;
 }
 
-.footer {
-  margin-top: auto;
-} */
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 768px) {
+  .contentArea {
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 20px;
+  }
+}

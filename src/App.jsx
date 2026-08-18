@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/home/Home";
+import { Products } from "./pages/products/Products";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       {/* Application Routes */}
       <Route element={<MainLayout />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/products" element={<Products />} />
       </Route>
     </Routes>
   );

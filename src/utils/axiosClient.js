@@ -42,7 +42,7 @@ const apiInstance = () => {
     },
     (error) => {
       if (error.message !== "canceled") console.error(error);
-      //return null;
+      return Promise.reject(error);
     }
   );
 
