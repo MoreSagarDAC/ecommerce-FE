@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Card from "../../components/Card";
 
-import { getAllProducts } from "../../services/product-servicies";
-
+import { getAllProducts } from "../../services/product-services";
+import { addToCart } from "../../services/cart-services";
 import {
   fetchProductsStart,
   fetchProductsSuccess,
@@ -28,17 +28,29 @@ export const Products = () => {
     try {
       const productData = await getAllProducts();
 
-      dispatch(
-        fetchProductsSuccess(productData?.data || [])
-      );
+      dispatch(fetchProductsSuccess(productData?.data || []));
     } catch (err) {
       dispatch(
-        fetchProductsFailure(
-          err?.message || "Failed to fetch products"
-        )
+        fetchProductsFailure(err?.message || "Failed to fetch products"),
       );
     }
   };
+
+const addInCart = useCallback(async (product) => {
+  try {
+    const payload = {
+      productId: product._id,
+      quantity: 1,
+    };
+    const productAddedCart = await addToCart(payload);
+    return productAddedCart;
+  } catch (error) {
+    console.error(
+      "Add to cart failed:",
+      error.response?.data || error.message
+    );
+  }
+}, []);
 
   useEffect(() => {
     if (products.length === 0 && status === "idle") {
@@ -70,34 +82,23 @@ export const Products = () => {
     <div className="products-page">
       <div className="products-header">
         <div>
-          <h1 className="products-title">
-            Products
-          </h1>
+          <h1 className="products-title">Products</h1>
 
-          <p className="products-subtitle">
-            Browse all available products
-          </p>
+          <p className="products-subtitle">Browse all available products</p>
         </div>
 
-        <span className="products-count">
-          {products.length} products
-        </span>
+        <span className="products-count">{products.length} products</span>
       </div>
 
       {products.length === 0 ? (
         <div className="products-empty">
           <h3>No products found</h3>
-          <p>
-            There are currently no products available.
-          </p>
+          <p>There are currently no products available.</p>
         </div>
       ) : (
         <div className="products-grid">
           {products.map((product) => (
-            <Card
-              key={product._id}
-              product={product}
-            />
+            <Card key={product._id} product={product} onAddToCart={addInCart} />
           ))}
         </div>
       )}

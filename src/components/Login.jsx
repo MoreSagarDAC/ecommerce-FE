@@ -35,14 +35,15 @@ const Login = () => {
         const response = await loginUser(encryptedData);
         if (response) {
           dispatch(login(response?.user));
-          navigate("/home")
+          sessionStorage.setItem("token", response?.user?.token);
+          navigate("/home");
           reset();
         }
       } catch (error) {
         console.error("Login error:", error);
       }
     },
-    [dispatch, navigate, reset]
+    [dispatch, navigate, reset],
   );
 
   return (

@@ -19,6 +19,10 @@ const apiInstance = () => {
 
   api.interceptors.request.use((config) => {
     const uri = config.url.split("?")[0];
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     if (config.headers["cancelPrev"]) {
       if (apiStack[uri]) {
@@ -36,14 +40,14 @@ const apiInstance = () => {
     (response) => {
       const uri = response?.config?.url.split("?")[0];
       Object.keys(apiStack).forEach(
-        (key) => key === uri && delete apiStack[key]
+        (key) => key === uri && delete apiStack[key],
       );
       return response;
     },
     (error) => {
       if (error.message !== "canceled") console.error(error);
       return Promise.reject(error);
-    }
+    },
   );
 
   return api;

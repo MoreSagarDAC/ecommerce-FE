@@ -113,7 +113,7 @@ const Button = React.forwardRef(
       startIcon,
       endIcon,
       sx,
-      label,
+      label='Test',
       style,
       type,
       disableRipple = true,

@@ -49,13 +49,12 @@ export default function HomeSwiper() {
               sx={{
                 display: "block",
                 width: "100%",
-
                 // Horizontal banner height
                 height: {
-                  xs: 220,
-                  sm: 280,
-                  md: 350,
-                  lg: 500,
+                  xs: 250,
+                  sm: 300,
+                  md: 370,
+                  lg: 470,
                 },
 
                 objectFit: "cover",
