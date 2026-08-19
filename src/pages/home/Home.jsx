@@ -1,12 +1,15 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
+import HomeSwiper from "../../components/HomeSwiper";
 
-function Home() {
-
+export default function Home() {
   return (
-    <div>
-      <h1>Hello, React!</h1>
-    </div>
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <HomeSwiper />
+    </Box>
   );
 }
-
-export default Home;
