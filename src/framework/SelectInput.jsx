@@ -35,7 +35,7 @@ const StyledFormControl = styled(FormControl)(({ theme, color = "black" }) => ({
     borderRadius: "5px",
     fontSize: "13px",
     fontWeight: 700,
-    backgroundColor: "#e6fcee",
+    backgroundColor: "#e8f4f7",
     "& fieldset": {
       border: `2px solid ${theme.palette[color].main}`,
     },
@@ -48,7 +48,7 @@ const StyledFormControl = styled(FormControl)(({ theme, color = "black" }) => ({
       boxShadow: `${theme.palette[color].boxShadow}`,
     },
     "&.Mui-disabled": {
-      backgroundColor: "#e6fcee",
+      backgroundColor: "#e8f4f7",
     },
   },
   "& .MuiInputLabel-root": {
@@ -80,7 +80,7 @@ const SelectInput = React.forwardRef(
       placeholder = "Select an option",
       ...otherProps
     },
-    ref
+    ref,
   ) => {
     return (
       <ThemeProvider theme={theme}>
@@ -120,7 +120,7 @@ const SelectInput = React.forwardRef(
         </StyledFormControl>
       </ThemeProvider>
     );
-  }
+  },
 );
 
 SelectInput.displayName = "SelectInput";

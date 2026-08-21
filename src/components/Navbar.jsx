@@ -38,7 +38,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/user-services";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import  persistor  from "../redux/authSlice";
+import { logout } from "../redux/authSlice";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -124,6 +127,7 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const profileMenuOpen = Boolean(anchorEl);
   const nevigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
   const mainMenuItems = [
@@ -202,6 +206,9 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
       });
       console.log(resp);
       sessionStorage.removeItem("token");
+
+      dispatch(logout());
+      await persistor.purge();
       nevigate("/login");
     } catch (error) {
       console.error(error);

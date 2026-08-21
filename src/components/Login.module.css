@@ -1,9 +1,15 @@
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   width: 350px;
-  height:500px;
-  margin: 50px auto;
+  height: 400px;
   background: #ffffff;
-  padding: 80px;
+  padding: 30px;
   border: 2px solid #000000;
   border-radius: 10px;
 }
@@ -39,5 +45,5 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #434df9;
+  color: #111df1;
 }

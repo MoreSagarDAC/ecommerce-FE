@@ -29,7 +29,7 @@ const StyledTextField = styled(TextField)(({ theme, color = "black" }) => ({
     borderRadius: "5px",
     fontSize: "13px",
     fontWeight: 700,
-    backgroundColor: "#e6fcee",
+    backgroundColor: "#e8f4f7",
     "& fieldset": {
       border: `2px solid ${theme.palette[color].main}`,
     },
@@ -42,7 +42,7 @@ const StyledTextField = styled(TextField)(({ theme, color = "black" }) => ({
       boxShadow: `${theme.palette[color].boxShadow}`,
     },
     "&.Mui-disabled": {
-      backgroundColor: "#e6fcee",
+      backgroundColor: "#e8f4f7",
     },
   },
   "& .MuiInputLabel-root": {
@@ -75,7 +75,7 @@ const NumberInput = React.forwardRef(
       max,
       ...otherProps
     },
-    ref
+    ref,
   ) => {
     const handleChange = (e) => {
       const inputValue = e.target.value;
@@ -144,7 +144,7 @@ const NumberInput = React.forwardRef(
         />
       </ThemeProvider>
     );
-  }
+  },
 );
 
 NumberInput.displayName = "NumberInput";

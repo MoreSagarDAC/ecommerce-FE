@@ -1,10 +1,17 @@
+.registerPage {
+  min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
-  width: 400px;
-  margin: 50px auto;
+  width: 350px;
+  height: 500px;
   background: #ffffff;
-  padding: 80px;
+  padding: 30px;
   border: 2px solid #000000;
-  border-radius: 10px;  
+  border-radius: 10px;
 }
 
 .title {
@@ -41,5 +48,5 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #434df9;
+  color: #111df1;
 }

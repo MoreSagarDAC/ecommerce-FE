@@ -47,61 +47,66 @@ const Login = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Login</h2>
-      <form onSubmit={handleSubmit(loginExistingUser)} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                label="Email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                required
-                placeholder="Enter your email"
-              />
-            )}
-          />
-        </div>
+    <div className={styles.loginPage}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Login</h2>
+        <form
+          onSubmit={handleSubmit(loginExistingUser)}
+          className={styles.form}
+        >
+          <div className={styles.inputGroup}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  label="Email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  required
+                  placeholder="Enter your email"
+                />
+              )}
+            />
+          </div>
 
-        <div className={styles.inputGroup}>
-          <Controller
-            control={control}
-            name="password"
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                name="password"
-                label="Password"
-                type="password"
-                placeholder="Enter your password"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-            )}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <p className={styles.registerLink}>
-            <Link to="/register"> Don't have an account? Register</Link>
-          </p>
-        </div>
-        <div className={styles.submitButton}>
-          <Button
-            type="submit"
-            label="Login"
-            color="black"
-            fullWidth={true}
-            sx={{ justifyContent: "center" }}
-            onClick={(e) => {
-              handleSubmit(loginExistingUser)(e);
-            }}
-          />
-        </div>
-      </form>
+          <div className={styles.inputGroup}>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  name="password"
+                  label="Password"
+                  type="password"
+                  placeholder="Enter your password"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+              )}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <p className={styles.registerLink}>
+              <Link to="/register"> Don't have an account? Register</Link>
+            </p>
+          </div>
+          <div className={styles.submitButton}>
+            <Button
+              type="submit"
+              label="Login"
+              color="black"
+              fullWidth={true}
+              sx={{ justifyContent: "center" }}
+              onClick={(e) => {
+                handleSubmit(loginExistingUser)(e);
+              }}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

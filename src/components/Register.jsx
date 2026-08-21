@@ -44,93 +44,95 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Register</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                label="Name"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                required
-                placeholder="Enter your name"
-              />
-            )}
-          />
-        </div>
+    <div className={styles.registerPage}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Register</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  label="Name"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  required
+                  placeholder="Enter your name"
+                />
+              )}
+            />
+          </div>
 
-        <div className={styles.inputGroup}>
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                label="Email"
-                type="email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                required
-                placeholder="Enter your email"
-              />
-            )}
-          />
-        </div>
+          <div className={styles.inputGroup}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  label="Email"
+                  type="email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  required
+                  placeholder="Enter your email"
+                />
+              )}
+            />
+          </div>
 
-        <div className={styles.inputGroup}>
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                label="Password"
-                type="password"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                required
-                placeholder="Enter your password"
-              />
-            )}
-          />
-        </div>
+          <div className={styles.inputGroup}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  label="Password"
+                  type="password"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  required
+                  placeholder="Enter your password"
+                />
+              )}
+            />
+          </div>
 
-        <div className={styles.inputGroup}>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <NumberInput
-                {...field}
-                label="Phone"
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
-                required
-                placeholder="Enter your phone number"
-              />
-            )}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <p className={styles.loginLink}>
-            <Link to="/login"> Already have an account? Login</Link>
-          </p>
-        </div>
-        <div className={styles.submitButton}>
-          <Button
-            type="submit"
-            label="Register"
-            color="black"
-            fullWidth={true}
-            sx={{ justifyContent: "center",  fontWeight: 900 }}
-          />
-        </div>
-      </form>
+          <div className={styles.inputGroup}>
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <NumberInput
+                  {...field}
+                  label="Phone"
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message}
+                  required
+                  placeholder="Enter your phone number"
+                />
+              )}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <p className={styles.loginLink}>
+              <Link to="/login"> Already have an account? Login</Link>
+            </p>
+          </div>
+          <div className={styles.submitButton}>
+            <Button
+              type="submit"
+              label="Register"
+              color="black"
+              fullWidth={true}
+              sx={{ justifyContent: "center", fontWeight: 900 }}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
