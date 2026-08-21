@@ -36,8 +36,9 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../services/user-services";
+import { useSelector } from "react-redux";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -118,14 +119,12 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
-export default function MiniDrawer({
-  open,
-  onDrawerOpen,
-  onDrawerClose,
-}) {
+export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const profileMenuOpen = Boolean(anchorEl);
+  const nevigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   const mainMenuItems = [
     {
@@ -194,6 +193,19 @@ export default function MiniDrawer({
 
   const handleProfileMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const logoutExistinguser = async () => {
+    try {
+      const resp = await logoutUser({
+        userId: user?.user?._id,
+      });
+      console.log(resp);
+      sessionStorage.removeItem("token");
+      nevigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -265,12 +277,12 @@ export default function MiniDrawer({
           Profile
         </MenuItem>
 
-        <MenuItem onClick={handleProfileMenuClose}>
+        {/* <MenuItem onClick={logoutExistinguser}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
           Logout
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
@@ -368,6 +380,7 @@ export default function MiniDrawer({
 
               <ListItemText
                 primary="Logout"
+                onClick={logoutExistinguser}
                 sx={{
                   opacity: open ? 1 : 0,
                 }}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import Button from "../framework/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -14,11 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export default function ProductCard({
-  product,
-  onAddToCart,
-  onShare,
-}) {
+export default function ProductCard({ product, onAddToCart, onShare }) {
   const [isFavourite, setIsFavourite] = useState(false);
 
   const title = product.name || product.title || "Untitled Product";
@@ -155,11 +151,7 @@ export default function ProductCard({
       <CardContent sx={{ p: 2.5 }}>
         {/* Category */}
         {categoryLabel && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ mb: 0.5 }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
             {categoryLabel}
           </Typography>
         )}
@@ -189,17 +181,9 @@ export default function ProductCard({
               mb: 1.5,
             }}
           >
-            <Rating
-              value={rating}
-              precision={0.5}
-              size="small"
-              readOnly
-            />
+            <Rating value={rating} precision={0.5} size="small" readOnly />
 
-            <Typography
-              variant="body2"
-              color="text.secondary"
-            >
+            <Typography variant="body2" color="text.secondary">
               ({reviews})
             </Typography>
           </Box>
@@ -214,10 +198,7 @@ export default function ProductCard({
             mb: 2,
           }}
         >
-          <Typography
-            variant="h6"
-            fontWeight={700}
-          >
+          <Typography variant="h6" fontWeight={700}>
             ₹{product.price}
           </Typography>
 
@@ -239,6 +220,7 @@ export default function ProductCard({
           fullWidth
           variant="contained"
           size="large"
+          label="Add to cart"
           startIcon={<ShoppingCartIcon />}
           onClick={() => onAddToCart?.(product)}
           sx={{

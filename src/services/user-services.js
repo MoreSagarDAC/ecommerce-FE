@@ -10,6 +10,11 @@ export const loginUser = async (credentials) => {
   return response?.data;
 };
 
+export const logoutUser = async (userId) => {
+  const response = await nodeClient.post("/v1/user/logout", userId);
+  return response?.data;
+};
+
 export const getUserProfile = async (userId) => {
   return await nodeClient.get(`/v1/user/${userId}`);
 };
