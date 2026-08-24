@@ -22,6 +22,8 @@ const Register = () => {
     mode: "onBlur",
   });
 
+  const hasErrors = Object.keys(errors).length > 0;
+
   const onSubmit = async (data) => {
     try {
       const encryptedData = {
@@ -45,7 +47,11 @@ const Register = () => {
 
   return (
     <div className={styles.registerPage}>
-      <div className={styles.container}>
+      <div
+        className={`${styles.container} ${
+          hasErrors ? styles.containerWithError : ""
+        }`}
+      >
         <h2 className={styles.title}>Register</h2>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.inputGroup}>
