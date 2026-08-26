@@ -19,13 +19,17 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
 
   const title = product.name || product.title || "Untitled Product";
   const image = product.images?.[0] || product.image || "";
+
   const categoryLabel =
     typeof product.category === "string"
       ? product.category
       : product.category?.name;
-  const rating = product.ratings ?? product.rating;
+
+  const rating = product.ratings ?? product.rating ?? 0;
   const reviews = product.numReviews ?? product.reviews ?? 0;
+
   const oldPrice = product.compareAtPrice ?? product.oldPrice;
+
   const discount =
     product.discount ||
     (oldPrice && product.price
@@ -41,6 +45,9 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
       sx={{
         width: "100%",
         maxWidth: 360,
+        minHeight: 540,
+        display: "flex",
+        flexDirection: "column",
         borderRadius: 3,
         overflow: "hidden",
         position: "relative",
@@ -53,16 +60,12 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
         },
       }}
     >
-      {/* Image area */}
       <Box
         sx={{
           position: "relative",
           width: "100%",
-          height: {
-            xs: 280,
-            sm: 320,
-            md: 350,
-          },
+          height: 350,
+          flexShrink: 0,
           overflow: "hidden",
           backgroundColor: "#f5f5f5",
         }}
@@ -146,12 +149,23 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
           </IconButton>
         </Box>
       </Box>
-
-      {/* Product details */}
-      <CardContent sx={{ p: 2.5 }}>
+      <CardContent
+        sx={{
+          p: 2.5,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* Category */}
         {categoryLabel && (
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 0.5,
+            }}
+          >
             {categoryLabel}
           </Typography>
         )}
@@ -162,6 +176,7 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
           fontWeight={600}
           sx={{
             mb: 1,
+            minHeight: 54,
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
@@ -215,7 +230,10 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
           )}
         </Box>
 
-        {/* Add to cart */}
+        {/* Spacer */}
+        <Box sx={{ flexGrow: 1 }} />
+
+        {/* Add to cart - ALWAYS AT BOTTOM */}
         <Button
           fullWidth
           variant="contained"
@@ -224,11 +242,16 @@ export default function ProductCard({ product, onAddToCart, onShare }) {
           startIcon={<ShoppingCartIcon />}
           onClick={() => onAddToCart?.(product)}
           sx={{
+            mt: "auto",
+            flexShrink: 0,
             textTransform: "none",
             borderRadius: 2,
             py: 1.3,
             fontWeight: 600,
             fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           Add to Cart
