@@ -4,6 +4,8 @@ const initialState = {
   items: [],
   status: "idle",
   error: null,
+  nextCursor: null,
+  hasMore: true,
 };
 
 const productSlice = createSlice({
@@ -18,9 +20,25 @@ const productSlice = createSlice({
     },
 
     fetchProductsSuccess: (state, action) => {
+      const { products, nextCursor, hasMore, append = false } = action.payload;
       state.status = "succeeded";
-      state.items = action.payload;
-      state.error = null;
+
+      if (append) {
+        // Prevent duplicate products
+        const existingIds = new Set(state.items.map((product) => product._id));
+
+        const newProducts = products.filter(
+          (product) => !existingIds.has(product._id),
+        );
+
+        state.items.push(...newProducts);
+      } else {
+        // First page / fresh fetch
+        state.items = products;
+      }
+
+      state.nextCursor = nextCursor;
+      state.hasMore = hasMore;
     },
 
     fetchProductsFailure: (state, action) => {
@@ -28,10 +46,12 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
-    clearProducts: (state) => {
+    resetProducts: (state) => {
       state.items = [];
       state.status = "idle";
       state.error = null;
+      state.nextCursor = null;
+      state.hasMore = true;
     },
   },
 });
@@ -40,7 +60,7 @@ export const {
   fetchProductsStart,
   fetchProductsSuccess,
   fetchProductsFailure,
-  clearProducts,
+  resetProducts,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -39,7 +39,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/user-services";
 import { useDispatch, useSelector } from "react-redux";
-import  persistor  from "../redux/authSlice";
+import { persistor } from "../redux/store";
 import { logout } from "../redux/authSlice";
 
 const drawerWidth = 240;
@@ -201,14 +201,12 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
 
   const logoutExistinguser = async () => {
     try {
-      const resp = await logoutUser({
+      await logoutUser({
         userId: user?.user?._id,
       });
-      console.log(resp);
       sessionStorage.removeItem("token");
-
-      dispatch(logout());
       await persistor.purge();
+      dispatch(logout());
       nevigate("/login");
     } catch (error) {
       console.error(error);
