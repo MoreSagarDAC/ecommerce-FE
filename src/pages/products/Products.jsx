@@ -22,7 +22,7 @@ export const Products = () => {
   const dispatch = useDispatch();
   const loadMoreRef = useRef(null);
   const isFetchingRef = useRef(false);
-  const paginationRef = useRef({ hasMore: true, nextCursor: null });
+  // const paginationRef = useRef({ hasMore: true, nextCursor: null });
 
   const {
     items: products = [],
@@ -32,7 +32,7 @@ export const Products = () => {
     hasMore,
   } = useSelector((state) => state.products);
 
-  paginationRef.current = { hasMore, nextCursor };
+  // paginationRef.current = { hasMore, nextCursor };
 
   const fetchProducts = useCallback(
     async ({ cursor = null, append = false } = {}) => {
@@ -40,7 +40,7 @@ export const Products = () => {
         return;
       }
 
-      if (append && (!paginationRef.current.hasMore || !cursor)) {
+      if (append && (!hasMore || !cursor)) {
         return;
       }
 
@@ -73,7 +73,7 @@ export const Products = () => {
         isFetchingRef.current = false;
       }
     },
-    [dispatch],
+    [dispatch, hasMore],
   );
 
   useEffect(() => {
@@ -89,20 +89,12 @@ export const Products = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || isFetchingRef.current) {
-          return;
+        if (entry.isIntersecting) {
+          fetchProducts({
+            cursor: nextCursor,
+            append: true,
+          });
         }
-
-        const { hasMore: more, nextCursor: cursor } = paginationRef.current;
-
-        if (!more || !cursor) {
-          return;
-        }
-
-        fetchProducts({
-          cursor,
-          append: true,
-        });
       },
       {
         rootMargin: "300px",
@@ -113,7 +105,7 @@ export const Products = () => {
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [fetchProducts, products.length]);
+  }, [fetchProducts, nextCursor, products?.length]);
 
   const addInCart = useCallback(async (product) => {
     try {
