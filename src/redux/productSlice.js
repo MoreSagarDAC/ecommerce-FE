@@ -10,9 +10,7 @@ const initialState = {
 
 const productSlice = createSlice({
   name: "products",
-
   initialState,
-
   reducers: {
     fetchProductsStart: (state) => {
       state.status = "loading";
@@ -20,25 +18,23 @@ const productSlice = createSlice({
     },
 
     fetchProductsSuccess: (state, action) => {
-      const { products, nextCursor, hasMore, append = false } = action.payload;
+      const { products = [], nextCursor = null, hasMore = false, append = false } =
+        action.payload;
+
       state.status = "succeeded";
 
       if (append) {
-        // Prevent duplicate products
         const existingIds = new Set(state.items.map((product) => product._id));
-
         const newProducts = products.filter(
           (product) => !existingIds.has(product._id),
         );
-
         state.items.push(...newProducts);
       } else {
-        // First page / fresh fetch
         state.items = products;
       }
 
       state.nextCursor = nextCursor;
-      state.hasMore = hasMore;
+      state.hasMore = Boolean(hasMore) && Boolean(nextCursor);
     },
 
     fetchProductsFailure: (state, action) => {
@@ -46,13 +42,7 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
-    resetProducts: (state) => {
-      state.items = [];
-      state.status = "idle";
-      state.error = null;
-      state.nextCursor = null;
-      state.hasMore = true;
-    },
+    resetProducts: () => initialState,
   },
 });
 

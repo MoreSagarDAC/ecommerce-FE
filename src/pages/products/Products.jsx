@@ -16,10 +16,13 @@ import {
 
 import "./Product.css";
 
+const PRODUCT_LIMIT = 20;
+
 export const Products = () => {
   const dispatch = useDispatch();
-  const PRODUCT_LIMIT = 20;
   const loadMoreRef = useRef(null);
+  const isFetchingRef = useRef(false);
+  const paginationRef = useRef({ hasMore: true, nextCursor: null });
 
   const {
     items: products = [],
@@ -29,16 +32,19 @@ export const Products = () => {
     hasMore,
   } = useSelector((state) => state.products);
 
+  paginationRef.current = { hasMore, nextCursor };
+
   const fetchProducts = useCallback(
     async ({ cursor = null, append = false } = {}) => {
-      if (status === "loading") {
+      if (isFetchingRef.current) {
         return;
       }
 
-      if (append && (!hasMore || !cursor)) {
+      if (append && (!paginationRef.current.hasMore || !cursor)) {
         return;
       }
 
+      isFetchingRef.current = true;
       dispatch(fetchProductsStart());
 
       try {
@@ -47,19 +53,15 @@ export const Products = () => {
           cursor,
         });
 
-        console.log("Product API response:", productData);
-
         dispatch(
           fetchProductsSuccess({
-            products: productData?.products || [],
-            nextCursor: productData?.nextCursor || null,
-            hasMore: Boolean(productData?.hasMore),
+            products: productData.products,
+            nextCursor: productData.nextCursor,
+            hasMore: productData.hasMore,
             append,
           }),
         );
       } catch (err) {
-        console.error("Failed to fetch products:", err);
-
         dispatch(
           fetchProductsFailure(
             err?.response?.data?.message ||
@@ -67,34 +69,40 @@ export const Products = () => {
               "Failed to fetch products",
           ),
         );
+      } finally {
+        isFetchingRef.current = false;
       }
     },
-    [dispatch, status, hasMore],
+    [dispatch],
   );
 
-  // Initial fetch
   useEffect(() => {
-    if (products.length === 0 && status === "idle") {
-      fetchProducts();
-    }
-  }, [products.length, status, fetchProducts]);
+    fetchProducts();
+  }, [fetchProducts]);
 
-  // Infinite scroll observer
   useEffect(() => {
     const element = loadMoreRef.current;
 
-    if (!element || !hasMore || !nextCursor) {
+    if (!element) {
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && status !== "loading") {
-          fetchProducts({
-            cursor: nextCursor,
-            append: true,
-          });
+        if (!entry.isIntersecting || isFetchingRef.current) {
+          return;
         }
+
+        const { hasMore: more, nextCursor: cursor } = paginationRef.current;
+
+        if (!more || !cursor) {
+          return;
+        }
+
+        fetchProducts({
+          cursor,
+          append: true,
+        });
       },
       {
         rootMargin: "300px",
@@ -105,7 +113,7 @@ export const Products = () => {
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [fetchProducts, hasMore, nextCursor, status]);
+  }, [fetchProducts, products.length]);
 
   const addInCart = useCallback(async (product) => {
     try {

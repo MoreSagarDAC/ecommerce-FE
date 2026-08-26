@@ -9,6 +9,7 @@ const storage = createIndexedDBStorage("ecommers-app");
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
