@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/home/Home";
 import { Products } from "./pages/products/Products";
 import Cart from "./components/Cart";
+import AuthGuard from "./components/AuthGuard";
 function App() {
   return (
     <Routes>
@@ -15,10 +16,12 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       {/* Application Routes */}
-      <Route element={<MainLayout />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/cart" element={<Cart />} />
+      <Route element={<AuthGuard />}>
+        <Route element={<MainLayout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/cart" element={<Cart />} />
+        </Route>
       </Route>
     </Routes>
   );
