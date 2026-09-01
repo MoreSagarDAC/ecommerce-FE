@@ -41,8 +41,8 @@ import { logoutUser } from "../services/user-services";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../redux/store";
 import { logout } from "../redux/authSlice";
+import CustomTooltip from "../framework/CustomTooltip.jsx";
 import shopAppLogo from "../assets/shop-app-logo-png_seeklogo-502749.png";
-
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -235,7 +235,8 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" noWrap component="div">    
+          <Typography variant="h6" noWrap component="div">
+            ShopEase
           </Typography>
 
           {/* Push icons to right */}
@@ -325,32 +326,39 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
         <List>
           {mainMenuItems.map((item) => (
             <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={Link}
-                to={item.path}
-                sx={{
-                  minHeight: 48,
-                  px: 2.5,
-                  justifyContent: open ? "initial" : "center",
-                }}
+              <CustomTooltip
+                title={item.label}
+                variant="bootstrap"
+                placement="right"
+                disableHoverListener={open}
               >
-                <ListItemIcon
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
                   sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                    mr: open ? 3 : "auto",
+                    minHeight: 48,
+                    px: 2.5,
+                    justifyContent: open ? "initial" : "center",
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      justifyContent: "center",
+                      mr: open ? 3 : "auto",
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
 
-                <ListItemText
-                  primary={item.label}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                  }}
-                />
-              </ListItemButton>
+                  <ListItemText
+                    primary={item.label}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                    }}
+                  />
+                </ListItemButton>
+              </CustomTooltip>
             </ListItem>
           ))}
         </List>

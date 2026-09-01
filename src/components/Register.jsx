@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextInput from "../framework/TextInput";
 import NumberInput from "../framework/NumberInput";
 import Button from "../framework/Button";
@@ -10,6 +10,7 @@ import { registerUser } from "../services/user-services";
 import { useNavigate } from "react-router-dom";
 import { encryptEmail, encryptPassword } from "../utils/encryption";
 import { Link } from "react-router-dom";
+import { displayToast } from "../framework/displayToast.jsx";
 const Register = () => {
   const navigate = useNavigate();
   const {
@@ -34,14 +35,26 @@ const Register = () => {
       const response = await registerUser(encryptedData);
       if (response.status === 200) {
         reset();
-        alert("Registration successful!");
+        // alert("Registration successful!");
+        displayToast({
+          message: "Registration successful!",
+          severity: "success",
+        });
         navigate("/login");
       } else {
-        alert("Registration failed. Please try again.");
+        // alert("Registration failed. Please try again.");
+        displayToast({
+          message: "Registration failed. Please try again.",
+          severity: "error",
+        });
       }
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      // alert("Registration failed. Please try again.");
+      displayToast({
+        message: "Product added to cart!",
+        severity: "error",
+      });
     }
   };
 
