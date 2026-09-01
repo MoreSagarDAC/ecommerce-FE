@@ -29,10 +29,6 @@ import {
   Check,
 } from "@mui/icons-material";
 
-// ----------------------------------------------------
-// PRODUCTS
-// ----------------------------------------------------
-
 const initialCartItems = [
   {
     id: 1,
@@ -58,15 +54,7 @@ const initialCartItems = [
   },
 ];
 
-// ----------------------------------------------------
-// STEPS
-// ----------------------------------------------------
-
 const steps = ["Cart", "Address", "Payment"];
-
-// ----------------------------------------------------
-// CUSTOM CONNECTOR
-// ----------------------------------------------------
 
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -77,15 +65,13 @@ const CustomConnector = styled(StepConnector)(({ theme }) => ({
 
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      background:
-        "linear-gradient(90deg, #1976d2, #7c4dff)",
+      background: "linear-gradient(90deg, #1976d2, #7c4dff)",
     },
   },
 
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      background:
-        "linear-gradient(90deg, #1976d2, #7c4dff)",
+      background: "linear-gradient(90deg, #1976d2, #7c4dff)",
     },
   },
 
@@ -96,10 +82,6 @@ const CustomConnector = styled(StepConnector)(({ theme }) => ({
     borderRadius: 10,
   },
 }));
-
-// ----------------------------------------------------
-// CUSTOM STEP ICON
-// ----------------------------------------------------
 
 const CustomStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   backgroundColor: "#d8d8d8",
@@ -115,14 +97,12 @@ const CustomStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   transition: "all 0.3s ease",
 
   ...(ownerState.active && {
-    background:
-      "linear-gradient(135deg, #1976d2, #7c4dff)",
+    background: "linear-gradient(135deg, #1976d2, #7c4dff)",
     boxShadow: "0 5px 15px rgba(25,118,210,0.3)",
   }),
 
   ...(ownerState.completed && {
-    background:
-      "linear-gradient(135deg, #1976d2, #7c4dff)",
+    background: "linear-gradient(135deg, #1976d2, #7c4dff)",
   }),
 }));
 
@@ -145,22 +125,12 @@ function CustomStepIcon(props) {
   );
 }
 
-// ----------------------------------------------------
-// CART COMPONENT
-// ----------------------------------------------------
-
 export default function Cart() {
   const [activeStep, setActiveStep] = useState(0);
 
-  const [cartItems, setCartItems] = useState(
-    initialCartItems
-  );
+  const [cartItems, setCartItems] = useState(initialCartItems);
 
   const [coupon, setCoupon] = useState("");
-
-  // --------------------------------------------------
-  // QUANTITY
-  // --------------------------------------------------
 
   const increaseQuantity = (id) => {
     setCartItems((items) =>
@@ -170,46 +140,31 @@ export default function Cart() {
               ...item,
               quantity: item.quantity + 1,
             }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
   const decreaseQuantity = (id) => {
     setCartItems((items) =>
-      items
-        .map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                quantity: Math.max(
-                  1,
-                  item.quantity - 1
-                ),
-              }
-            : item
-        )
+      items.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: Math.max(1, item.quantity - 1),
+            }
+          : item,
+      ),
     );
   };
-
-  // --------------------------------------------------
-  // DELETE
-  // --------------------------------------------------
 
   const removeItem = (id) => {
-    setCartItems((items) =>  
-      items.filter((item) => item.id !== id)
-    );
+    setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
-  // --------------------------------------------------
-  // TOTALS
-  // --------------------------------------------------
-
   const subTotal = cartItems.reduce(
-    (total, item) =>
-      total + item.price * item.quantity,
-    0
+    (total, item) => total + item.price * item.quantity,
+    0,
   );
 
   const discount = subTotal * 0.15;
@@ -218,12 +173,7 @@ export default function Cart() {
 
   const tax = 0;
 
-  const total =
-    subTotal - discount + tax + shipping;
-
-  // --------------------------------------------------
-  // STEP NAVIGATION
-  // --------------------------------------------------
+  const total = subTotal - discount + tax + shipping;
 
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
@@ -232,10 +182,6 @@ export default function Cart() {
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
   };
-
-  // --------------------------------------------------
-  // CART CONTENT
-  // --------------------------------------------------
 
   const CartContent = () => (
     <Box>
@@ -259,9 +205,7 @@ export default function Cart() {
             }}
           />
 
-          <Typography variant="h6">
-            Your cart is empty
-          </Typography>
+          <Typography variant="h6">Your cart is empty</Typography>
         </Paper>
       ) : (
         cartItems.map((item, index) => (
@@ -311,10 +255,7 @@ export default function Cart() {
                   minWidth: 0,
                 }}
               >
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                >
+                <Typography variant="h6" fontWeight={700}>
                   {item.name}
                 </Typography>
 
@@ -335,11 +276,8 @@ export default function Cart() {
                     mt: 1,
                   }}
                 >
-                  Size{" "}
-                  <strong>{item.size}</strong>
-                  &nbsp; / &nbsp;
-                  Color{" "}
-                  <strong>{item.color}</strong>
+                  Size <strong>{item.size}</strong>
+                  &nbsp; / &nbsp; Color <strong>{item.color}</strong>
                 </Typography>
 
                 {/* PRICE */}
@@ -352,10 +290,7 @@ export default function Cart() {
                     mt: 1,
                   }}
                 >
-                  <Typography
-                    variant="h6"
-                    fontWeight={700}
-                  >
+                  <Typography variant="h6" fontWeight={700}>
                     ${item.price}
                   </Typography>
 
@@ -363,8 +298,7 @@ export default function Cart() {
                     variant="body2"
                     color="text.secondary"
                     sx={{
-                      textDecoration:
-                        "line-through",
+                      textDecoration: "line-through",
                     }}
                   >
                     ${item.oldPrice}
@@ -376,8 +310,7 @@ export default function Cart() {
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent:
-                      "space-between",
+                    justifyContent: "space-between",
                     alignItems: "center",
                     mt: 2,
                   }}
@@ -394,9 +327,7 @@ export default function Cart() {
                   >
                     <IconButton
                       size="small"
-                      onClick={() =>
-                        decreaseQuantity(item.id)
-                      }
+                      onClick={() => decreaseQuantity(item.id)}
                     >
                       <Remove fontSize="small" />
                     </IconButton>
@@ -412,9 +343,7 @@ export default function Cart() {
 
                     <IconButton
                       size="small"
-                      onClick={() =>
-                        increaseQuantity(item.id)
-                      }
+                      onClick={() => increaseQuantity(item.id)}
                     >
                       <Add fontSize="small" />
                     </IconButton>
@@ -423,11 +352,7 @@ export default function Cart() {
                   {/* DELETE / EDIT */}
 
                   <Box>
-                    <IconButton
-                      onClick={() =>
-                        removeItem(item.id)
-                      }
-                    >
+                    <IconButton onClick={() => removeItem(item.id)}>
                       <DeleteOutline />
                     </IconButton>
 
@@ -439,9 +364,7 @@ export default function Cart() {
               </Box>
             </Box>
 
-            {index !== cartItems.length - 1 && (
-              <Divider />
-            )}
+            {index !== cartItems.length - 1 && <Divider />}
           </Box>
         ))
       )}
@@ -454,11 +377,7 @@ export default function Cart() {
 
   const AddressContent = () => (
     <Box>
-      <Typography
-        variant="h5"
-        fontWeight={700}
-        mb={3}
-      >
+      <Typography variant="h5" fontWeight={700} mb={3}>
         Delivery Address
       </Typography>
 
@@ -472,25 +391,13 @@ export default function Cart() {
           gap: 2,
         }}
       >
-        <TextField
-          label="First Name"
-          fullWidth
-        />
+        <TextField label="First Name" fullWidth />
 
-        <TextField
-          label="Last Name"
-          fullWidth
-        />
+        <TextField label="Last Name" fullWidth />
 
-        <TextField
-          label="Email"
-          fullWidth
-        />
+        <TextField label="Email" fullWidth />
 
-        <TextField
-          label="Phone"
-          fullWidth
-        />
+        <TextField label="Phone" fullWidth />
 
         <TextField
           label="Address"
@@ -502,30 +409,16 @@ export default function Cart() {
           }}
         />
 
-        <TextField
-          label="City"
-          fullWidth
-        />
+        <TextField label="City" fullWidth />
 
-        <TextField
-          label="Postal Code"
-          fullWidth
-        />
+        <TextField label="Postal Code" fullWidth />
       </Box>
     </Box>
   );
 
-  // --------------------------------------------------
-  // PAYMENT
-  // --------------------------------------------------
-
   const PaymentContent = () => (
     <Box>
-      <Typography
-        variant="h5"
-        fontWeight={700}
-        mb={3}
-      >
+      <Typography variant="h5" fontWeight={700} mb={3}>
         Payment Method
       </Typography>
 
@@ -538,16 +431,10 @@ export default function Cart() {
           mb: 2,
         }}
       >
-        <Typography fontWeight={600}>
-          Credit / Debit Card
-        </Typography>
+        <Typography fontWeight={600}>Credit / Debit Card</Typography>
 
         <Box sx={{ mt: 2 }}>
-          <TextField
-            label="Card Number"
-            fullWidth
-            sx={{ mb: 2 }}
-          />
+          <TextField label="Card Number" fullWidth sx={{ mb: 2 }} />
 
           <Box
             sx={{
@@ -556,9 +443,7 @@ export default function Cart() {
               gap: 2,
             }}
           >
-            <TextField
-              label="Expiry Date"
-            />
+            <TextField label="Expiry Date" />
 
             <TextField label="CVV" />
           </Box>
@@ -592,29 +477,6 @@ export default function Cart() {
       }}
     >
       <Container maxWidth="xl">
-
-        {/* ------------------------------------------
-            TITLE
-        ------------------------------------------ */}
-
-        {/* <Typography
-          variant="h3"
-          fontWeight={700}
-          sx={{
-            mb: 4,
-            fontSize: {
-              xs: "2rem",
-              md: "3rem",
-            },
-          }}
-        >
-          Cart
-        </Typography> */}
-
-        {/* ------------------------------------------
-            STEPPER
-        ------------------------------------------ */}
-
         <Paper
           elevation={0}
           sx={{
@@ -635,11 +497,7 @@ export default function Cart() {
           >
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel
-                  StepIconComponent={
-                    CustomStepIcon
-                  }
-                >
+                <StepLabel StepIconComponent={CustomStepIcon}>
                   {label}
                 </StepLabel>
               </Step>
@@ -647,19 +505,12 @@ export default function Cart() {
           </Stepper>
         </Paper>
 
-        {/* ------------------------------------------
-            CONTENT
-        ------------------------------------------ */}
-
         <Box
           sx={{
             display: "grid",
             gridTemplateColumns: {
               xs: "1fr",
-              lg:
-                activeStep === 0
-                  ? "1fr 360px"
-                  : "1fr 360px",
+              lg: activeStep === 0 ? "1fr 360px" : "1fr 360px",
             },
             gap: 4,
             alignItems: "start",
@@ -680,37 +531,26 @@ export default function Cart() {
               backgroundColor: "#fff",
             }}
           >
-            {activeStep === 0 && (
-              <CartContent />
-            )}
+            {activeStep === 0 && <CartContent />}
 
-            {activeStep === 1 && (
-              <AddressContent />
-            )}
+            {activeStep === 1 && <AddressContent />}
 
-            {activeStep === 2 && (
-              <PaymentContent />
-            )}
+            {activeStep === 2 && <PaymentContent />}
 
             {/* BACK / NEXT */}
 
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mt: 4,
               }}
             >
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-              >
+              <Button disabled={activeStep === 0} onClick={handleBack}>
                 Back
               </Button>
 
-              {activeStep !==
-                steps.length - 1 && (
+              {activeStep !== steps.length - 1 && (
                 <Button
                   variant="contained"
                   onClick={handleNext}
@@ -725,10 +565,6 @@ export default function Cart() {
             </Box>
           </Paper>
 
-          {/* ----------------------------------------
-              ORDER SUMMARY
-          ---------------------------------------- */}
-
           <Paper
             elevation={0}
             sx={{
@@ -742,11 +578,7 @@ export default function Cart() {
               top: 20,
             }}
           >
-            <Typography
-              variant="h6"
-              fontWeight={700}
-              mb={3}
-            >
+            <Typography variant="h6" fontWeight={700} mb={3}>
               Order Summary
             </Typography>
 
@@ -755,18 +587,13 @@ export default function Cart() {
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mb: 2,
               }}
             >
-              <Typography>
-                Sub Total
-              </Typography>
+              <Typography>Sub Total</Typography>
 
-              <Typography fontWeight={600}>
-                ${subTotal.toFixed(2)}
-              </Typography>
+              <Typography fontWeight={600}>${subTotal.toFixed(2)}</Typography>
             </Box>
 
             {/* DISCOUNT */}
@@ -774,18 +601,13 @@ export default function Cart() {
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mb: 2,
               }}
             >
-              <Typography>
-                Discount
-              </Typography>
+              <Typography>Discount</Typography>
 
-              <Typography fontWeight={600}>
-                -${discount.toFixed(2)}
-              </Typography>
+              <Typography fontWeight={600}>-${discount.toFixed(2)}</Typography>
             </Box>
 
             {/* TAX */}
@@ -793,16 +615,13 @@ export default function Cart() {
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mb: 2,
               }}
             >
               <Typography>Tax</Typography>
 
-              <Typography fontWeight={600}>
-                ${tax.toFixed(2)}
-              </Typography>
+              <Typography fontWeight={600}>${tax.toFixed(2)}</Typography>
             </Box>
 
             {/* SHIPPING */}
@@ -810,14 +629,11 @@ export default function Cart() {
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mb: 2,
               }}
             >
-              <Typography>
-                Shipping
-              </Typography>
+              <Typography>Shipping</Typography>
 
               <Typography
                 fontWeight={700}
@@ -836,22 +652,15 @@ export default function Cart() {
             <Box
               sx={{
                 display: "flex",
-                justifyContent:
-                  "space-between",
+                justifyContent: "space-between",
                 mb: 3,
               }}
             >
-              <Typography
-                variant="h6"
-                fontWeight={700}
-              >
+              <Typography variant="h6" fontWeight={700}>
                 Total
               </Typography>
 
-              <Typography
-                variant="h6"
-                fontWeight={700}
-              >
+              <Typography variant="h6" fontWeight={700}>
                 ${total.toFixed(2)}
               </Typography>
             </Box>
@@ -886,38 +695,25 @@ export default function Cart() {
               sx={{
                 mt: 2,
                 pt: 2,
-                borderTop:
-                  "1px solid rgba(0,0,0,0.08)",
+                borderTop: "1px solid rgba(0,0,0,0.08)",
                 textAlign: "center",
               }}
             >
               <Typography variant="body2">
-                Estimated Delivery by{" "}
-                <strong>
-                  25 August, 2026
-                </strong>
+                Estimated Delivery by <strong>25 August, 2026</strong>
               </Typography>
             </Box>
 
-            {/* --------------------------------------
-                COUPON
-            -------------------------------------- */}
-
             {activeStep === 0 && (
               <Box sx={{ mt: 3 }}>
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                  mb={2}
-                >
+                <Typography variant="h6" fontWeight={700} mb={2}>
                   Have a Coupon?
                 </Typography>
 
                 <Box
                   sx={{
                     display: "flex",
-                    border:
-                      "1px solid #ddd",
+                    border: "1px solid #ddd",
                     borderRadius: 2,
                     overflow: "hidden",
                     backgroundColor: "#fff",
@@ -928,11 +724,7 @@ export default function Cart() {
                     size="small"
                     placeholder="Coupon Code"
                     value={coupon}
-                    onChange={(e) =>
-                      setCoupon(
-                        e.target.value
-                      )
-                    }
+                    onChange={(e) => setCoupon(e.target.value)}
                     variant="standard"
                     InputProps={{
                       disableUnderline: true,
