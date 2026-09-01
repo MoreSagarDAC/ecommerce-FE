@@ -41,6 +41,7 @@ import { logoutUser } from "../services/user-services";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../redux/store";
 import { logout } from "../redux/authSlice";
+import shopAppLogo from "../assets/shop-app-logo-png_seeklogo-502749.png";
 
 const drawerWidth = 240;
 
@@ -234,8 +235,7 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" noWrap component="div">
-            My Ecommerce
+          <Typography variant="h6" noWrap component="div">    
           </Typography>
 
           {/* Push icons to right */}
@@ -290,7 +290,29 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
         </MenuItem> */}
       </Menu>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: open ? "space-between" : "center",
+            minHeight: "64px",
+            px: 2,
+          }}
+        >
+          {open && (
+            <Box
+              component="img"
+              src={shopAppLogo}
+              alt="ShopEase"
+              sx={{
+                width: 240,
+                height: 45,
+                objectFit: "inherit",
+                display: "block",
+              }}
+            />
+          )}
+
           <IconButton onClick={onDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
