@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextInput from "../framework/TextInput";
 import Button from "../framework/Button";
 import styles from "./Login.module.css";
@@ -9,8 +9,10 @@ import { useCallback } from "react";
 import { encryptEmail, encryptPassword } from "../utils/encryption";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/user-services.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/authSlice";
+import { getCartItems } from "../services/cart-services.js";
+import { setCart } from "../redux/cartSlice.js";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
     mode: "onBlur",
   });
+
+  const user = useSelector((state) => state.auth.user);
 
   const loginExistingUser = useCallback(
     async (data) => {
@@ -45,6 +49,15 @@ const Login = () => {
     },
     [dispatch, navigate, reset],
   );
+
+  const getAllCartItems = useCallback(async () => {
+    const cartitems = await getCartItems();
+    dispatch(setCart(cartitems));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) getAllCartItems();
+  }, [getAllCartItems, user]);
 
   return (
     <div className={styles.loginPage}>

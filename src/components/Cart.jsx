@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  decreaseQuantity as decreaseCartQuantity,
+  increaseQuantity as increaseCartQuantity,
+  removeFromCart,
+} from "../redux/cartSlice";
 import {
   Box,
   Container,
@@ -22,41 +27,15 @@ import {
   Add,
   Remove,
   DeleteOutline,
-  EditOutlined,
   ShoppingBagOutlined,
   LocationOnOutlined,
   CreditCardOutlined,
   Check,
 } from "@mui/icons-material";
 
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Slim Fit Casual Shirt",
-    description: "Button-Down Collar & Placket",
-    size: "XL",
-    color: "Maroon",
-    price: 85,
-    oldPrice: 92,
-    quantity: 1,
-    image: "/images/shirt.png",
-  },
-  {
-    id: 2,
-    name: "Printed Straight Kurtas",
-    description: "Digital Printed With Yoke Embroidery",
-    size: "XL",
-    color: "Green",
-    price: 68,
-    oldPrice: 75,
-    quantity: 2,
-    image: "/images/kurta.png",
-  },
-];
-
 const steps = ["Cart", "Address", "Payment"];
 
-const CustomConnector = styled(StepConnector)(({ theme }) => ({
+const CustomConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 22,
     left: "calc(-50% + 22px)",
@@ -83,7 +62,7 @@ const CustomConnector = styled(StepConnector)(({ theme }) => ({
   },
 }));
 
-const CustomStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+const CustomStepIconRoot = styled("div")(({ ownerState }) => ({
   backgroundColor: "#d8d8d8",
   zIndex: 1,
   width: 45,
@@ -125,41 +104,42 @@ function CustomStepIcon(props) {
   );
 }
 
+const mapCartItem = (item) => {
+  const product = item?.productId || {};
+
+  return {
+    cartId: item?._id,
+    productId: product._id,
+    name: product.name || "",
+    description: product.description || "",
+    brand: product.brand || "",
+    sku: product.sku || "",
+    price: product.price ?? 0,
+    compareAtPrice: product.compareAtPrice,
+    image: product.images?.[0] || "",
+    quantity: item?.quantity || 1,
+  };
+};
+
 export default function Cart() {
   const [activeStep, setActiveStep] = useState(0);
-
-  const [cartItems, setCartItems] = useState(initialCartItems);
-
   const [coupon, setCoupon] = useState("");
+  const dispatch = useDispatch();
 
-  const increaseQuantity = (id) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
-          : item,
-      ),
-    );
+  const cartItems = useSelector((state) => state.cart.items || []).map(
+    mapCartItem,
+  );
+
+  const increaseQuantity = (productId) => {
+    dispatch(increaseCartQuantity(productId));
   };
 
-  const decreaseQuantity = (id) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: Math.max(1, item.quantity - 1),
-            }
-          : item,
-      ),
-    );
+  const decreaseQuantity = (productId) => {
+    dispatch(decreaseCartQuantity(productId));
   };
 
-  const removeItem = (id) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
+  const removeItem = (productId) => {
+    dispatch(removeFromCart(productId));
   };
 
   const subTotal = cartItems.reduce(
@@ -209,7 +189,7 @@ export default function Cart() {
         </Paper>
       ) : (
         cartItems.map((item, index) => (
-          <Box key={item.id}>
+          <Box key={item.cartId || item.productId}>
             <Box
               sx={{
                 display: "flex",
@@ -222,8 +202,6 @@ export default function Cart() {
                 },
               }}
             >
-              {/* IMAGE */}
-
               <Box
                 component="img"
                 src={item.image}
@@ -246,8 +224,6 @@ export default function Cart() {
                   backgroundColor: "#f7f4ef",
                 }}
               />
-
-              {/* DETAILS */}
 
               <Box
                 sx={{
@@ -276,11 +252,9 @@ export default function Cart() {
                     mt: 1,
                   }}
                 >
-                  Size <strong>{item.size}</strong>
-                  &nbsp; / &nbsp; Color <strong>{item.color}</strong>
+                  Brand <strong>{item.brand}</strong>
+                  &nbsp; / &nbsp; SKU <strong>{item.sku}</strong>
                 </Typography>
-
-                {/* PRICE */}
 
                 <Box
                   sx={{
@@ -291,21 +265,21 @@ export default function Cart() {
                   }}
                 >
                   <Typography variant="h6" fontWeight={700}>
-                    ${item.price}
+                    ${item.price.toFixed(2)}
                   </Typography>
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      textDecoration: "line-through",
-                    }}
-                  >
-                    ${item.oldPrice}
-                  </Typography>
+                  {item.compareAtPrice > item.price && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textDecoration: "line-through",
+                      }}
+                    >
+                      ${item.compareAtPrice.toFixed(2)}
+                    </Typography>
+                  )}
                 </Box>
-
-                {/* ACTIONS */}
 
                 <Box
                   sx={{
@@ -315,8 +289,6 @@ export default function Cart() {
                     mt: 2,
                   }}
                 >
-                  {/* QUANTITY */}
-
                   <Box
                     sx={{
                       display: "flex",
@@ -327,7 +299,7 @@ export default function Cart() {
                   >
                     <IconButton
                       size="small"
-                      onClick={() => decreaseQuantity(item.id)}
+                      onClick={() => decreaseQuantity(item.productId)}
                     >
                       <Remove fontSize="small" />
                     </IconButton>
@@ -343,21 +315,15 @@ export default function Cart() {
 
                     <IconButton
                       size="small"
-                      onClick={() => increaseQuantity(item.id)}
+                      onClick={() => increaseQuantity(item.productId)}
                     >
                       <Add fontSize="small" />
                     </IconButton>
                   </Box>
 
-                  {/* DELETE / EDIT */}
-
                   <Box>
-                    <IconButton onClick={() => removeItem(item.id)}>
+                    <IconButton onClick={() => removeItem(item.productId)}>
                       <DeleteOutline />
-                    </IconButton>
-
-                    <IconButton>
-                      <EditOutlined />
                     </IconButton>
                   </Box>
                 </Box>
@@ -370,10 +336,6 @@ export default function Cart() {
       )}
     </Box>
   );
-
-  // --------------------------------------------------
-  // ADDRESS
-  // --------------------------------------------------
 
   const AddressContent = () => (
     <Box>

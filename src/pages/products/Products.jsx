@@ -6,13 +6,14 @@ import Card from "../../components/Card";
 
 import { getAllProducts } from "../../services/product-services";
 
-import { addToCart } from "../../services/cart-services";
-
+import { addToCart as addToCartApi, getCartItems } from "../../services/cart-services";
+import { displayToast } from "../../framework/displayToast";
 import {
   fetchProductsStart,
   fetchProductsSuccess,
   fetchProductsFailure,
 } from "../../redux/productSlice";
+import { setCart } from "../../redux/cartSlice";
 
 import "./Product.css";
 
@@ -107,16 +108,27 @@ export const Products = () => {
     return () => observer.disconnect();
   }, [fetchProducts, nextCursor, products?.length]);
 
-  const addInCart = useCallback(async (product) => {
-    try {
-      return await addToCart({
-        productId: product._id,
-        quantity: 1,
-      });
-    } catch (err) {
-      console.error("Add to cart failed:", err.response?.data || err.message);
-    }
-  }, []);
+  const addInCart = useCallback(
+    async (product) => {
+      try {
+        const resp = await addToCartApi({
+          productId: product._id,
+          quantity: 1,
+        });
+        if (resp) {
+          const cartItems = await getCartItems();
+          dispatch(setCart(cartItems));
+          displayToast({
+            type: "success",
+            message: "Product added to cart.",
+          });
+        }
+      } catch (err) {
+        console.error("Add to cart failed:", err.response?.data || err.message);
+      }
+    },
+    [dispatch],
+  );
 
   if (status === "loading" && products.length === 0) {
     return (
