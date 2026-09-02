@@ -131,6 +131,10 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
+  const getCartDetails = () => {
+    nevigate("/cart");
+  };
+
   const mainMenuItems = [
     {
       label: "Home",
@@ -217,7 +221,15 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
   return (
     <Box className="app-layout">
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{
+          top: 0,
+          left: 0,
+          backgroundColor: "#366466",
+        }}
+      >
         <Toolbar>
           {/* Left side */}
           <IconButton
@@ -243,16 +255,37 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
           <Box sx={{ flexGrow: 1 }} />
 
           {/* Notification */}
-          <Tooltip title="Notifications">
+          <CustomTooltip
+            title="Notifications"
+            variant="bootstrap"
+            placement="bottom"
+            disableHoverListener={open}
+          >
             <IconButton color="inherit" size="large">
               <Badge badgeContent={4} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-          </Tooltip>
+          </CustomTooltip>
+
+          <CustomTooltip
+            title="Cart"
+            variant="bootstrap"
+            placement="bottom"
+            disableHoverListener={open}
+          >
+            <IconButton color="inherit" size="large" onClick={getCartDetails}>
+              <ShoppingCartIcon />
+            </IconButton>
+          </CustomTooltip>
 
           {/* User */}
-          <Tooltip title="Account">
+          <CustomTooltip
+            title="User"
+            variant="bootstrap"
+            placement="bottom"
+            disableHoverListener={open}
+          >
             <IconButton
               color="inherit"
               size="large"
@@ -260,7 +293,7 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
             >
               <AccountCircle />
             </IconButton>
-          </Tooltip>
+          </CustomTooltip>
         </Toolbar>
       </AppBar>
       <Menu

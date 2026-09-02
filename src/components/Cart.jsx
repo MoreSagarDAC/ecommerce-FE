@@ -124,6 +124,16 @@ const mapCartItem = (item) => {
 export default function Cart() {
   const [activeStep, setActiveStep] = useState(0);
   const [coupon, setCoupon] = useState("");
+  const [deliveryDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 5);
+
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  });
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.items || []).map(
@@ -377,56 +387,6 @@ export default function Cart() {
       </Box>
     </Box>
   );
-
-  const PaymentContent = () => (
-    <Box>
-      <Typography variant="h5" fontWeight={700} mb={3}>
-        Payment Method
-      </Typography>
-
-      <Paper
-        elevation={0}
-        sx={{
-          border: "1px solid #ddd",
-          borderRadius: 2,
-          p: 3,
-          mb: 2,
-        }}
-      >
-        <Typography fontWeight={600}>Credit / Debit Card</Typography>
-
-        <Box sx={{ mt: 2 }}>
-          <TextField label="Card Number" fullWidth sx={{ mb: 2 }} />
-
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 2,
-            }}
-          >
-            <TextField label="Expiry Date" />
-
-            <TextField label="CVV" />
-          </Box>
-        </Box>
-      </Paper>
-
-      <Button
-        fullWidth
-        variant="contained"
-        size="large"
-        sx={{
-          py: 1.5,
-          borderRadius: 2,
-          fontWeight: 700,
-        }}
-      >
-        Place Order
-      </Button>
-    </Box>
-  );
-
   return (
     <Box
       sx={{
@@ -662,7 +622,7 @@ export default function Cart() {
               }}
             >
               <Typography variant="body2">
-                Estimated Delivery by <strong>25 August, 2026</strong>
+                Estimated Delivery by <strong>{deliveryDate}</strong>
               </Typography>
             </Box>
 
@@ -700,6 +660,8 @@ export default function Cart() {
                     sx={{
                       px: 2,
                       fontWeight: 700,
+                      color: "#f1f5f8",
+                      backgroundColor: "#1b1c1d",
                     }}
                   >
                     Apply
