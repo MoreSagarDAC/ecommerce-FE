@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASEURL = "http://localhost:5000";
+export const BASEURL = "http://localhost";
 
 export const BYPASS_ERROR_URLS = [
   // Add URLs that should bypass error handling
