@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  decreaseQuantity as decreaseCartQuantity,
-  increaseQuantity as increaseCartQuantity,
-  removeFromCart,
-} from "../redux/cartSlice";
+import { useSelector } from "react-redux";
 import {
   Box,
   Container,
   Typography,
   Paper,
   Divider,
-  IconButton,
   Button,
   TextField,
   Stepper,
@@ -22,11 +16,10 @@ import {
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
-
+import { CartContent } from "./CartContent";
+import { AddressContent } from "./DelveryAddress";
+import { PaymentContent } from "./Payment";
 import {
-  Add,
-  Remove,
-  DeleteOutline,
   ShoppingBagOutlined,
   LocationOnOutlined,
   CreditCardOutlined,
@@ -134,23 +127,10 @@ export default function Cart() {
       year: "numeric",
     });
   });
-  const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.items || []).map(
     mapCartItem,
   );
-
-  const increaseQuantity = (productId) => {
-    dispatch(increaseCartQuantity(productId));
-  };
-
-  const decreaseQuantity = (productId) => {
-    dispatch(decreaseCartQuantity(productId));
-  };
-
-  const removeItem = (productId) => {
-    dispatch(removeFromCart(productId));
-  };
 
   const subTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -173,220 +153,6 @@ export default function Cart() {
     setActiveStep((prev) => prev - 1);
   };
 
-  const CartContent = () => (
-    <Box>
-      {/* CART ITEMS */}
-
-      {cartItems.length === 0 ? (
-        <Paper
-          elevation={0}
-          sx={{
-            p: 5,
-            textAlign: "center",
-            border: "1px solid #eee",
-            borderRadius: 3,
-          }}
-        >
-          <ShoppingBagOutlined
-            sx={{
-              fontSize: 60,
-              color: "#aaa",
-              mb: 2,
-            }}
-          />
-
-          <Typography variant="h6">Your cart is empty</Typography>
-        </Paper>
-      ) : (
-        cartItems.map((item, index) => (
-          <Box key={item.cartId || item.productId}>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 3,
-                py: 3,
-
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <Box
-                component="img"
-                src={item.image}
-                alt={item.name}
-                sx={{
-                  width: {
-                    xs: "100%",
-                    sm: 120,
-                  },
-
-                  height: {
-                    xs: 220,
-                    sm: 140,
-                  },
-
-                  objectFit: "cover",
-
-                  borderRadius: 2,
-
-                  backgroundColor: "#f7f4ef",
-                }}
-              />
-
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 0,
-                }}
-              >
-                <Typography variant="h6" fontWeight={700}>
-                  {item.name}
-                </Typography>
-
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{
-                    mt: 0.5,
-                  }}
-                >
-                  {item.description}
-                </Typography>
-
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{
-                    mt: 1,
-                  }}
-                >
-                  Brand <strong>{item.brand}</strong>
-                  &nbsp; / &nbsp; SKU <strong>{item.sku}</strong>
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 1.5,
-                    alignItems: "center",
-                    mt: 1,
-                  }}
-                >
-                  <Typography variant="h6" fontWeight={700}>
-                    ${item.price.toFixed(2)}
-                  </Typography>
-
-                  {item.compareAtPrice > item.price && (
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        textDecoration: "line-through",
-                      }}
-                    >
-                      ${item.compareAtPrice.toFixed(2)}
-                    </Typography>
-                  )}
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mt: 2,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      border: "1px solid #ddd",
-                      borderRadius: 1,
-                    }}
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={() => decreaseQuantity(item.productId)}
-                    >
-                      <Remove fontSize="small" />
-                    </IconButton>
-
-                    <Typography
-                      sx={{
-                        px: 1.5,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {item.quantity}
-                    </Typography>
-
-                    <IconButton
-                      size="small"
-                      onClick={() => increaseQuantity(item.productId)}
-                    >
-                      <Add fontSize="small" />
-                    </IconButton>
-                  </Box>
-
-                  <Box>
-                    <IconButton onClick={() => removeItem(item.productId)}>
-                      <DeleteOutline />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-
-            {index !== cartItems.length - 1 && <Divider />}
-          </Box>
-        ))
-      )}
-    </Box>
-  );
-
-  const AddressContent = () => (
-    <Box>
-      <Typography variant="h5" fontWeight={700} mb={3}>
-        Delivery Address
-      </Typography>
-
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "1fr 1fr",
-          },
-          gap: 2,
-        }}
-      >
-        <TextField label="First Name" fullWidth />
-
-        <TextField label="Last Name" fullWidth />
-
-        <TextField label="Email" fullWidth />
-
-        <TextField label="Phone" fullWidth />
-
-        <TextField
-          label="Address"
-          fullWidth
-          sx={{
-            gridColumn: {
-              sm: "1 / -1",
-            },
-          }}
-        />
-
-        <TextField label="City" fullWidth />
-
-        <TextField label="Postal Code" fullWidth />
-      </Box>
-    </Box>
-  );
   return (
     <Box
       sx={{

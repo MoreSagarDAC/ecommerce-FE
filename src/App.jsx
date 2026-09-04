@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/home/Home";
 import { Products } from "./pages/products/Products";
-import Cart from "./components/Cart";
+import Cart from "./components/cart/Cart";
 import AuthGuard from "./components/AuthGuard";
 function App() {
   return (

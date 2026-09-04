@@ -130,6 +130,7 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
   const nevigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const cart = useSelector((state) => state.cart);
 
   const getCartDetails = () => {
     nevigate("/cart");
@@ -275,7 +276,9 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
             disableHoverListener={open}
           >
             <IconButton color="inherit" size="large" onClick={getCartDetails}>
-              <ShoppingCartIcon />
+              <Badge badgeContent={cart?.items?.length} color="primary">
+                <ShoppingCartIcon />
+              </Badge>
             </IconButton>
           </CustomTooltip>
 
