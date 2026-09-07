@@ -6,7 +6,10 @@ import Card from "../../components/Card";
 
 import { getAllProducts } from "../../services/product-services";
 
-import { addToCart as addToCartApi, getCartItems } from "../../services/cart-services";
+import {
+  addToCart as addToCartApi,
+  getCartItems,
+} from "../../services/cart-services";
 import { displayToast } from "../../framework/displayToast";
 import {
   fetchProductsStart,
@@ -14,6 +17,8 @@ import {
   fetchProductsFailure,
 } from "../../redux/productSlice";
 import { setCart } from "../../redux/cartSlice";
+
+import Loader from "../../framework/Loder";
 
 import "./Product.css";
 
@@ -183,7 +188,7 @@ export const Products = () => {
           </div>
 
           <div ref={loadMoreRef} className="products-load-more">
-            {status === "loading" && <p>Loading more products...</p>}
+            {status === "loading" && <Loader />}
 
             {!hasMore && <p>You've reached the end of the products.</p>}
 

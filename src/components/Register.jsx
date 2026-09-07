@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { encryptEmail, encryptPassword } from "../utils/encryption";
 import { Link } from "react-router-dom";
 import { displayToast } from "../framework/displayToast.jsx";
+
 const Register = () => {
   const navigate = useNavigate();
   const {
@@ -52,7 +53,7 @@ const Register = () => {
       console.error("Registration failed:", error);
       // alert("Registration failed. Please try again.");
       displayToast({
-        message: "Product added to cart!",
+        message: "Registration failed. Please try again!",
         severity: "error",
       });
     }

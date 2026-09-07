@@ -56,6 +56,9 @@ const Login = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("user", user);
+    console.log("!user : ", !user);
+
     if (user) getAllCartItems();
   }, [getAllCartItems, user]);
 
