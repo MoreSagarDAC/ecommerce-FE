@@ -1,5 +1,5 @@
 import axios from "axios";
-import store, { persistor } from "../redux/store";
+import store from "../redux/store";
 import { logout } from "../redux/authSlice";
 export const BASEURL = "http://localhost";
 //http://localhost:5000 -- used when nginx not used.
@@ -11,26 +11,15 @@ export const BYPASS_ERROR_URLS = [
   // "/service/public/v0/users/has/draft",
 ];
 
-const AUTH_PUBLIC_URLS = ["/v1/user/login", "/v1/user/register"];
-
-const isAuthPublicRequest = (url = "") =>
-  AUTH_PUBLIC_URLS.some((path) => url.includes(path));
-
-const isExpiredSession = (error) => {
+const isSessionAuthError = (error) => {
   if (error.response?.status !== 401) return false;
-  if (isAuthPublicRequest(error.config?.url)) return false;
 
-  const data = error.response?.data || {};
-  const code = data.code || data.error;
-  const message = String(data.message || "").toLowerCase();
+  const code = error.response?.data?.code;
 
   return (
     code === "TOKEN_EXPIRED" ||
     code === "INVALID_TOKEN" ||
-    code === "AUTH_REQUIRED" ||
-    message.includes("token expired") ||
-    message.includes("jwt expired") ||
-    message.includes("invalid token")
+    code === "AUTH_REQUIRED"
   );
 };
 
@@ -79,10 +68,9 @@ const apiInstance = () => {
     (response) => response,
 
     (error) => {
-      if (isExpiredSession(error)) {
+      if (isSessionAuthError(error)) {
         sessionStorage.removeItem("token");
         store.dispatch(logout());
-        persistor.purge();
         window.location.href = "/login";
       }
 

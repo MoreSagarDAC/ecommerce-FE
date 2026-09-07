@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/authSlice";
 import { getCartItems } from "../services/cart-services.js";
 import { setCart } from "../redux/cartSlice.js";
+import { displayToast } from "../framework/displayToast.jsx";
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,6 +46,10 @@ const Login = () => {
           reset();
         }
       } catch (error) {
+        displayToast({
+          severity: "error",
+          message: "Invalid Email Or Password.",
+        });
         console.error("Login error:", error);
       }
     },
