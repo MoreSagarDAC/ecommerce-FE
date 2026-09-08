@@ -15,8 +15,8 @@ const theme = createTheme({
       color: "white",
       boxShadow: "-4px 4px 0px 0px rgb(0,0,0, 0.8)",
     },
-    violet: {
-      main: "#434DF9",
+    blue: {
+      main: "#3623e9",
       contrastText: "#000000",
       color: "white",
       boxShadow: "-4px 4px 0px 0px rgb(67,77,249, 0.8)",

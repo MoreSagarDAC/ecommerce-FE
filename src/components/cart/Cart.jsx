@@ -6,7 +6,6 @@ import {
   Typography,
   Paper,
   Divider,
-  Button,
   TextField,
   Stepper,
   Step,
@@ -15,6 +14,7 @@ import {
   stepConnectorClasses,
 } from "@mui/material";
 
+import Button from "../../framework/Button";
 import { styled } from "@mui/material/styles";
 import { CartContent } from "./CartContent";
 import { AddressContent } from "./DelveryAddress";
@@ -234,21 +234,22 @@ export default function Cart() {
                 mt: 4,
               }}
             >
-              <Button disabled={activeStep === 0} onClick={handleBack}>
-                Back
-              </Button>
+              <Button
+                label="Back"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+              />
 
               {activeStep !== steps.length - 1 && (
                 <Button
                   variant="contained"
                   onClick={handleNext}
+                  label="Continue"
                   sx={{
                     px: 4,
                     borderRadius: 2,
                   }}
-                >
-                  Continue
-                </Button>
+                />
               )}
             </Box>
           </Paper>
@@ -360,21 +361,8 @@ export default function Cart() {
                 fullWidth
                 variant="contained"
                 onClick={handleNext}
-                sx={{
-                  py: 1.5,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  backgroundColor: "#222",
-
-                  "&:hover": {
-                    backgroundColor: "#000",
-                  },
-                }}
-              >
-                Proceed to Checkout
-              </Button>
+                label="Proceed to Checkout"
+              />
             )}
 
             {/* DELIVERY */}
@@ -422,16 +410,7 @@ export default function Cart() {
                     }}
                   />
 
-                  <Button
-                    sx={{
-                      px: 2,
-                      fontWeight: 700,
-                      color: "#f1f5f8",
-                      backgroundColor: "#1b1c1d",
-                    }}
-                  >
-                    Apply
-                  </Button>
+                  <Button label="Apply" />
                 </Box>
               </Box>
             )}
