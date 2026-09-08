@@ -240,15 +240,17 @@ export default function Cart() {
                 onClick={handleBack}
               />
 
-              {activeStep !== steps.length - 1 && (
+              {activeStep < steps.length - 1 ? (
                 <Button
-                  variant="contained"
                   onClick={handleNext}
                   label="Continue"
-                  sx={{
-                    px: 4,
-                    borderRadius: 2,
-                  }}
+                  sx={{ px: 4, borderRadius: 2 }}
+                />
+              ) : (
+                <Button
+                  onClick={handleBack}
+                  label="Save Order"
+                  sx={{ px: 4, borderRadius: 2 }}
                 />
               )}
             </Box>
@@ -282,7 +284,7 @@ export default function Cart() {
             >
               <Typography>Sub Total</Typography>
 
-              <Typography fontWeight={600}>${subTotal.toFixed(2)}</Typography>
+              <Typography fontWeight={600}>₹{subTotal.toFixed(2)}</Typography>
             </Box>
 
             {/* DISCOUNT */}
@@ -296,7 +298,7 @@ export default function Cart() {
             >
               <Typography>Discount</Typography>
 
-              <Typography fontWeight={600}>-${discount.toFixed(2)}</Typography>
+              <Typography fontWeight={600}>-₹{discount.toFixed(2)}</Typography>
             </Box>
 
             {/* TAX */}
@@ -310,7 +312,7 @@ export default function Cart() {
             >
               <Typography>Tax</Typography>
 
-              <Typography fontWeight={600}>${tax.toFixed(2)}</Typography>
+              <Typography fontWeight={600}>₹{tax.toFixed(2)}</Typography>
             </Box>
 
             {/* SHIPPING */}
@@ -350,7 +352,7 @@ export default function Cart() {
               </Typography>
 
               <Typography variant="h6" fontWeight={700}>
-                ${total.toFixed(2)}
+                ₹{total.toFixed(2)}
               </Typography>
             </Box>
 

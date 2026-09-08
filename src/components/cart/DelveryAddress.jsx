@@ -79,9 +79,11 @@ export const AddressContent = () => {
     console.log("here inside getAllAddress");
     const add = await getAllAddresses(user?.user?._id);
     setAddresses(add);
-    setSelectedAddress(add[0]._id);
-    console.log("add : ", add);
-    return add;
+    if (add?.length > 0) {
+      setSelectedAddress(add[0]._id);
+    } else {
+      setSelectedAddress(null);
+    }
   }, [user]);
 
   useEffect(() => {

@@ -150,8 +150,8 @@ export const CartContent = () => {
                   }}
                 >
                   <Typography variant="h6" fontWeight={700}>
-                    ${item.price.toFixed(2)}
-                  </Typography>
+                    ₹{item.price.toFixed(2)}
+                  </Typography> 
 
                   {item.compareAtPrice > item.price && (
                     <Typography
@@ -161,7 +161,7 @@ export const CartContent = () => {
                         textDecoration: "line-through",
                       }}
                     >
-                      ${item.compareAtPrice.toFixed(2)}
+                      ₹{item.compareAtPrice.toFixed(2)}
                     </Typography>
                   )}
                 </Box>
