@@ -7,6 +7,7 @@ import Home from "./pages/home/Home";
 import { Products } from "./pages/products/Products";
 import Cart from "./components/cart/Cart";
 import AuthGuard from "./components/AuthGuard";
+import { AddressList } from "./components/cart/AddressList";
 function App() {
   return (
     <Routes>
@@ -21,6 +22,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/addresses" element={<AddressList />} />
         </Route>
       </Route>
     </Routes>
