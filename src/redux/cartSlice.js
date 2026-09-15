@@ -4,6 +4,7 @@ const initialState = {
   items: [],
   totalItems: 0,
   totalAmount: 0,
+  finalOrderTotal: 0,
 };
 
 const getProductId = (item) =>
@@ -31,6 +32,13 @@ const recalcTotals = (state) => {
     (total, item) => total + getItemPrice(item) * (item.quantity || 0),
     0,
   );
+
+  const discount = state.totalAmount * 0.15;
+  const shipping = state.totalAmount > 0 ? 0 : 0;
+  const tax = 0;
+
+  state.finalOrderTotal =
+    Math.round((state.totalAmount - discount + tax + shipping) * 100) / 100;
 };
 
 const cartSlice = createSlice({
@@ -95,6 +103,7 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       state.totalAmount = 0;
+      state.finalOrderTotal = 0;
     },
 
     setCart: (state, action) => {

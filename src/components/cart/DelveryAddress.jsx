@@ -27,10 +27,8 @@ const emptyForm = {
   postalCode: "",
 };
 
-export const AddressContent = () => {
+export const AddressContent = ({ selectedAddress, onSelectAddress }) => {
   const [addresses, setAddresses] = useState([]);
-
-  const [selectedAddress, setSelectedAddress] = useState();
 
   const [showForm, setShowForm] = useState(false);
 
@@ -53,9 +51,10 @@ export const AddressContent = () => {
     //   ...formData,
     // };
 
+    const userId = user?._id || user?.user?._id;
     const payload = {
       ...formData,
-      userId: user?.user?._id,
+      userId,
     };
 
     const resp = await createNewAddress(payload);
@@ -63,28 +62,26 @@ export const AddressContent = () => {
       severity: "success",
       message: "Address saved successfully",
     });
-    // setAddresses((prev) => [...prev, newAddress]);
-
-    // // Select newly added address
-    // setSelectedAddress(newAddress._id);
-
-    // Reset form
-    // setFormData(emptyForm);
-
-    // Hide form
     setShowForm(false);
+    setFormData(emptyForm);
+
+    const createdId = resp?.data?._id || resp?.address?._id || resp?._id;
+    await getAllAddress(createdId);
   };
 
-  const getAllAddress = useCallback(async () => {
-    console.log("here inside getAllAddress");
-    const add = await getAllAddresses(user?.user?._id);
-    setAddresses(add);
-    if (add?.length > 0) {
-      setSelectedAddress(add[0]._id);
-    } else {
-      setSelectedAddress(null);
-    }
-  }, [user]);
+  const getAllAddress = useCallback(
+    async (preferId) => {
+      const userId = user?._id || user?.user?._id;
+      const add = await getAllAddresses(userId);
+      setAddresses(add || []);
+      if (preferId) {
+        onSelectAddress?.(preferId);
+      } else if (add?.length > 0) {
+        onSelectAddress?.(add[0]._id);
+      }
+    },
+    [user, onSelectAddress],
+  );
 
   useEffect(() => {
     console.log("here inside useEffect");
@@ -108,7 +105,7 @@ export const AddressContent = () => {
             <Paper
               key={item._id}
               elevation={0}
-              onClick={() => setSelectedAddress(item._id)}
+              onClick={() => onSelectAddress?.(item._id)}
               sx={{
                 border: "2px solid",
                 backgroundColor: "#e4ecf8",
@@ -126,7 +123,7 @@ export const AddressContent = () => {
               <Box display="flex" alignItems="flex-start">
                 <Radio
                   checked={isSelected}
-                  onChange={() => setSelectedAddress(item._id)}
+                  onChange={() => onSelectAddress?.(item._id)}
                   color="error"
                   sx={{
                     p: 0,

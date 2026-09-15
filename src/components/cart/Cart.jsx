@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Container,
@@ -25,6 +25,10 @@ import {
   CreditCardOutlined,
   Check,
 } from "@mui/icons-material";
+
+import { saveOrders } from "../../services/order/order-services.js";
+import { clearCart } from "../../redux/cartSlice.js";
+import { displayToast } from "../../framework/displayToast.jsx";
 
 const steps = ["Cart", "Address", "Payment"];
 
@@ -98,25 +102,30 @@ function CustomStepIcon(props) {
 }
 
 const mapCartItem = (item) => {
-  const product = item?.productId || {};
+  const product =
+    item?.productId && typeof item.productId === "object" ? item.productId : {};
 
   return {
     cartId: item?._id,
-    productId: product._id,
-    name: product.name || "",
-    description: product.description || "",
-    brand: product.brand || "",
-    sku: product.sku || "",
-    price: product.price ?? 0,
-    compareAtPrice: product.compareAtPrice,
-    image: product.images?.[0] || "",
+    productId: product._id || item?.productId,
+    name: product.name || item?.name || "",
+    description: product.description || item?.description || "",
+    brand: product.brand || item?.brand || "",
+    sku: product.sku || item?.sku || "",
+    price: product.price ?? item?.price ?? 0,
+    compareAtPrice: product.compareAtPrice ?? item?.compareAtPrice,
+    image: product.images?.[0] || item?.image || "",
     quantity: item?.quantity || 1,
   };
 };
 
 export default function Cart() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   const [activeStep, setActiveStep] = useState(0);
   const [coupon, setCoupon] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isSavingOrder, setIsSavingOrder] = useState(false);
   const [deliveryDate] = useState(() => {
     const date = new Date();
     date.setDate(date.getDate() + 5);
@@ -143,14 +152,96 @@ export default function Cart() {
 
   const tax = 0;
 
-  const total = subTotal - discount + tax + shipping;
+  const finalOrderTotal = subTotal - discount + tax + shipping;
 
   const handleNext = () => {
+    if (activeStep === 1 && !selectedAddress) {
+      displayToast({
+        severity: "error",
+        message: "Please select a delivery address.",
+      });
+      return;
+    }
     setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
+  };
+
+  const handleSelectAddress = useCallback((addressId) => {
+    setSelectedAddress(addressId);
+  }, []);
+
+  const handleSaveOrder = async () => {
+    const userId = user?._id || user?.user?._id;
+
+    if (!userId) {
+      displayToast({
+        severity: "error",
+        message: "Please login to place an order.",
+      });
+      return;
+    }
+
+    if (!cartItems.length) {
+      displayToast({
+        severity: "error",
+        message: "Your cart is empty.",
+      });
+      return;
+    }
+
+    if (!selectedAddress) {
+      displayToast({
+        severity: "error",
+        message: "Please select a delivery address.",
+      });
+      return;
+    }
+
+    const orderItems = cartItems.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      productName: item.name,
+      productImage: item.image || "",
+      price: item.price,
+      totalPrice: Math.round(item.price * item.quantity),
+    }));
+
+    const orderPayload = {
+      userId,
+      deliveryAddress: selectedAddress,
+      subTotalAmt: Number(subTotal.toFixed(2)),
+      totalAmt: Number(finalOrderTotal.toFixed(2)),
+      orderItems,
+      paymentData: {
+        method: "ONLINE",
+        currency: "INR",
+      },
+    };
+
+    try {
+      setIsSavingOrder(true);
+      const order = await saveOrders({ orderData: orderPayload });
+      displayToast({
+        severity: "success",
+        message: "Order placed successfully.",
+      });
+      dispatch(clearCart());
+      setActiveStep(0);
+      console.log("Order : ", order);
+    } catch (error) {
+      displayToast({
+        severity: "error",
+        message:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Failed to place order.",
+      });
+    } finally {
+      setIsSavingOrder(false);
+    }
   };
 
   return (
@@ -221,7 +312,12 @@ export default function Cart() {
           >
             {activeStep === 0 && <CartContent />}
 
-            {activeStep === 1 && <AddressContent />}
+            {activeStep === 1 && (
+              <AddressContent
+                selectedAddress={selectedAddress}
+                onSelectAddress={handleSelectAddress}
+              />
+            )}
 
             {activeStep === 2 && <PaymentContent />}
 
@@ -248,8 +344,9 @@ export default function Cart() {
                 />
               ) : (
                 <Button
-                  onClick={handleBack}
-                  label="Save Order"
+                  onClick={handleSaveOrder}
+                  label={isSavingOrder ? "Placing Order..." : "Place Order"}
+                  disabled={isSavingOrder}
                   sx={{ px: 4, borderRadius: 2 }}
                 />
               )}
@@ -352,7 +449,7 @@ export default function Cart() {
               </Typography>
 
               <Typography variant="h6" fontWeight={700}>
-                ₹{total.toFixed(2)}
+                ₹{finalOrderTotal.toFixed(2)}
               </Typography>
             </Box>
 
