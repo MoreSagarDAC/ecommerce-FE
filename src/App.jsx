@@ -8,6 +8,7 @@ import { Products } from "./pages/products/Products";
 import Cart from "./components/cart/Cart";
 import AuthGuard from "./components/AuthGuard";
 import { AddressList } from "./components/cart/AddressList";
+import OrderList from "./pages/orders/OrderList.jsx";
 function App() {
   return (
     <Routes>
@@ -23,6 +24,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/addresses" element={<AddressList />} />
+          <Route path="/orders" element={<OrderList />} />
         </Route>
       </Route>
     </Routes>
