@@ -42,6 +42,10 @@ const Login = () => {
         if (response) {
           dispatch(login(response?.user));
           sessionStorage.setItem("token", response?.user?.token);
+          sessionStorage.setItem(
+            "refreshToken",
+            response?.user?.refreshToken,
+          );
           navigate("/home");
           reset();
         }

@@ -211,6 +211,7 @@ export default function MiniDrawer({ open, onDrawerOpen, onDrawerClose }) {
         userId: user?.user?._id,
       });
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("refreshToken");
       await persistor.purge();
       dispatch(logout());
       nevigate("/login");

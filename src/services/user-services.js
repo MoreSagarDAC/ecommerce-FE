@@ -10,6 +10,13 @@ export const loginUser = async (credentials) => {
   return response?.data;
 };
 
+export const refreshAccessToken = async (refreshToken) => {
+  const response = await nodeClient.post("/v1/user/refresh-token", {
+    refreshToken,
+  });
+  return response?.data;
+};
+
 export const logoutUser = async (userId) => {
   const response = await nodeClient.post("/v1/user/logout", userId);
   return response?.data;
